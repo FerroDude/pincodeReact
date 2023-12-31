@@ -1,22 +1,67 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './pincode.css';
 import { useState } from 'react';
 
 const Pincode = () => {
   const [code, setCode] = useState([]);
 
+  const hardCodedCode = ['1', '2', '3', '4'];
+
+  const hideCode = (code) => {
+    // If the code is 'OK' or 'WRONG', return it as is
+    if (code.join('') === 'OK' || code.join('') === 'ERROR') {
+      return code;
+    }
+
+    // Otherwise, return the code with all digits except the last one hidden
+    const hiddenCode = code.map((number, index) => {
+      if (index < code.length - 1) {
+        return '*';
+      }
+      return number;
+    });
+    return hiddenCode;
+  };
+  const checkCode = (code) => {
+    const isCorrect = code.every((number, index) => {
+      return number === hardCodedCode[index];
+    });
+    return isCorrect;
+  };
+
   const handleButtonClick = (e) => {
-    if (code.length === 3) {
-      setCode([]);
+    if (
+      code.length >= 4 ||
+      code.join('') === 'OK' ||
+      code.join('') === 'WRONG'
+    ) {
       return;
     }
+
     const newCode = e.target.innerHTML;
-    setCode([...code, newCode]);
+    const updatedCode = [...code, newCode];
+
+    if (updatedCode.length === 4) {
+      const isCorrect = checkCode(updatedCode);
+
+      if (isCorrect) {
+        setCode(['O', 'K']);
+      } else if (!isCorrect) {
+        setCode(['E', 'R', 'R', 'O', 'R']);
+      }
+
+      setTimeout(() => {
+        setCode([]);
+      }, 3000);
+      return;
+    }
+
+    setCode(updatedCode);
   };
   return (
     <>
       <div className="pincodeContainer">
-        <div className="display">{code}</div>
+        <div className="display">{hideCode(code).join('')}</div>
         <div className="keyboard">
           <button onClick={handleButtonClick} className="btn">
             1
