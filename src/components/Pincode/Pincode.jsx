@@ -8,12 +8,10 @@ const Pincode = () => {
   const hardCodedCode = ['1', '2', '3', '4'];
 
   const hideCode = (code) => {
-    // If the code is 'OK' or 'WRONG', return it as is
     if (code.join('') === 'OK' || code.join('') === 'ERROR') {
       return code;
     }
 
-    // Otherwise, return the code with all digits except the last one hidden
     const hiddenCode = code.map((number, index) => {
       if (index < code.length - 1) {
         return '*';
@@ -30,15 +28,21 @@ const Pincode = () => {
   };
 
   const handleButtonClick = (e) => {
+    let newCode;
+    if (typeof e === 'object') {
+      newCode = e.target.innerHTML; // For click events
+    } else {
+      newCode = e; // For keyboard events
+    }
+
     if (
       code.length >= 4 ||
       code.join('') === 'OK' ||
-      code.join('') === 'WRONG'
+      code.join('') === 'ERROR'
     ) {
       return;
     }
 
-    const newCode = e.target.innerHTML;
     const updatedCode = [...code, newCode];
 
     if (updatedCode.length === 4) {
@@ -58,9 +62,15 @@ const Pincode = () => {
 
     setCode(updatedCode);
   };
+
+  const handleKeyDown = (e) => {
+    if (!isNaN(e.key) && e.key >= 0 && e.key <= 9) {
+      handleButtonClick(e.key);
+    }
+  };
   return (
     <>
-      <div className="pincodeContainer">
+      <div className="pincodeContainer" onKeyDown={handleKeyDown} tabIndex={0}>
         <div className="display">{hideCode(code).join('')}</div>
         <div className="keyboard">
           <button onClick={handleButtonClick} className="btn">
