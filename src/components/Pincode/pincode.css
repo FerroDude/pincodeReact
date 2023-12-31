@@ -43,3 +43,7 @@
   background-color: #11151c;
   color: #fffffc;
 }
+
+.zero {
+  grid-column: 2/3;
+}

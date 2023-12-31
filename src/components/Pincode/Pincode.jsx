@@ -100,7 +100,7 @@ const Pincode = () => {
           <button onClick={handleButtonClick} className="btn">
             9
           </button>
-          <button onClick={handleButtonClick} className="btn">
+          <button onClick={handleButtonClick} className="btn zero">
             0
           </button>
         </div>
