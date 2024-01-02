@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
 import './pincode.css';
 import { useState } from 'react';
 
 const Pincode = () => {
   const [code, setCode] = useState([]);
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [isLocked, setIsLocked] = useState(false);
 
   const hardCodedCode = ['1', '2', '3', '4'];
 
@@ -20,6 +21,7 @@ const Pincode = () => {
     });
     return hiddenCode;
   };
+
   const checkCode = (code) => {
     const isCorrect = code.every((number, index) => {
       return number === hardCodedCode[index];
@@ -28,6 +30,8 @@ const Pincode = () => {
   };
 
   const handleButtonClick = (e) => {
+    if (isLocked) return;
+
     let newCode;
     if (typeof e === 'object') {
       newCode = e.target.innerHTML; // For click events
@@ -50,12 +54,22 @@ const Pincode = () => {
 
       if (isCorrect) {
         setCode(['O', 'K']);
+        setFailedAttempts(0);
       } else if (!isCorrect) {
         setCode(['E', 'R', 'R', 'O', 'R']);
+        setFailedAttempts(failedAttempts + 1);
       }
 
       setTimeout(() => {
         setCode([]);
+        if (failedAttempts >= 2) {
+          // If there have been 3 failed attempts
+          setIsLocked(true); // Lock the keyboard
+          setFailedAttempts(0); // Reset the number of failed attempts
+          setTimeout(() => {
+            setIsLocked(false); // Unlock the keyboard after 30 seconds
+          }, 30000);
+        }
       }, 3000);
       return;
     }
@@ -71,7 +85,9 @@ const Pincode = () => {
   return (
     <>
       <div className="pincodeContainer" onKeyDown={handleKeyDown} tabIndex={0}>
-        <div className="display">{hideCode(code).join('')}</div>
+        <div className="display">
+          {isLocked ? 'LOCKED' : hideCode(code).join('')}
+        </div>
         <div className="keyboard">
           <button onClick={handleButtonClick} className="btn">
             1
