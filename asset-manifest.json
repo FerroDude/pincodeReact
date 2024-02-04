@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/%3Chttps://ferrodude.github.io/pincodeReact%3E/static/css/main.f45e35b1.css",
+    "main.js": "/%3Chttps://ferrodude.github.io/pincodeReact%3E/static/js/main.ec137aa3.js",
+    "index.html": "/%3Chttps://ferrodude.github.io/pincodeReact%3E/index.html",
+    "main.f45e35b1.css.map": "/%3Chttps://ferrodude.github.io/pincodeReact%3E/static/css/main.f45e35b1.css.map",
+    "main.ec137aa3.js.map": "/%3Chttps://ferrodude.github.io/pincodeReact%3E/static/js/main.ec137aa3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f45e35b1.css",
+    "static/js/main.ec137aa3.js"
+  ]
+}
